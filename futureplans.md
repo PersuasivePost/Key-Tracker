@@ -10,6 +10,9 @@ to scale to next level: kafka apache, kubernets and maybe go server instead of t
 [01:51, 04/05/2025] ASHVATTH JOSHI: make socket server, add dashboard, authentication remaining, docker and prisma for storage, maybe integrate with cloud
 
 
+# Possible file structure: 
+
+
 ..
 keystroke-monitor/
 ├── client/                        # Python Client Agent (runs on desktops)

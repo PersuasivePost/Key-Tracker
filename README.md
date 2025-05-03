@@ -2,6 +2,7 @@
 
 `pip install pynput cryptography`
 
+`cd ~folder`
 
 # Ubuntu:
 
